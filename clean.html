@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Firebase Cleanup Script</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body>
+    <h3>Cleaning Firebase Database...</h3>
+    <div id="output">Starting cleanup...</div>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAiT_mbGltrhHDIMSHu_kkFMVb1W8QRcfI",
+            authDomain: "wedding-b4568.firebaseapp.com",
+            projectId: "wedding-b4568",
+            storageBucket: "wedding-b4568.appspot.com",
+            messagingSenderId: "367123984534",
+            appId: "1:367123984534:web:e0586e3f43685f69c9b5d2"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        
+        async function clean() {
+            const output = document.getElementById("output");
+            try {
+                let count = 0;
+                
+                // Clean Gallery
+                output.innerHTML += "<br>Cleaning gallery...";
+                const galSnapshot = await db.collection("gallery").get();
+                for (const doc of galSnapshot.docs) {
+                    await doc.ref.delete();
+                    count++;
+                }
+                
+                // Clean Album
+                output.innerHTML += "<br>Cleaning album...";
+                const albSnapshot = await db.collection("album").get();
+                for (const doc of albSnapshot.docs) {
+                    await doc.ref.delete();
+                    count++;
+                }
+                
+                // Clean Wishes
+                output.innerHTML += "<br>Cleaning wishes...";
+                const wishesSnapshot = await db.collection("wishes").get();
+                for (const doc of wishesSnapshot.docs) {
+                    await doc.ref.delete();
+                    count++;
+                }
+
+                // Clean Hero Slideshow settings
+                output.innerHTML += "<br>Cleaning hero images settings...";
+                const settingsSnapshot = await db.collection("settings").get();
+                for (const doc of settingsSnapshot.docs) {
+                    const data = doc.data();
+                    if (data.heroImages && data.heroImages.length > 0) {
+                        await doc.ref.update({ heroImages: [] });
+                        count++;
+                    }
+                }
+                
+                output.innerHTML += "<br><br><b>SUCCESS: Deleted/Cleared " + count + " items!</b>";
+            } catch (e) {
+                output.innerHTML += "<br><br><b style='color:red;'>ERROR: " + e.message + "</b>";
+            }
+        }
+        clean();
+    </script>
+</body>
+</html>

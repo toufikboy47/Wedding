@@ -1,0 +1,14 @@
+{
+  "name": "getmarry-premium",
+  "version": "1.0.0",
+  "description": "Premium Bengali matrimonial portal with Firebase integration and elegant transitions.",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^4.4.5"
+  }
+}

@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zack & Zoey | The Wedding Celebration</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Leaflet.js Map CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <!-- Main Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ========================================================== -->
+    <!-- 1. PHONE PREVIEW SCREEN & INTRO TRANSITION                 -->
+    <!-- ========================================================== -->
+    <div id="intro-container">
+        <!-- The Left Page/Door of the Book -->
+        <div id="left-door" class="door">
+            <div class="vertical-gold-line hidden-intro-content"></div>
+        </div>
+
+        <!-- The Right Page/Door of the Book -->
+        <div id="right-door" class="door">
+            <div class="vertical-gold-line hidden-intro-content"></div>
+        </div>
+
+
+        <!-- Central Interactive Button (Floats above the doors) -->
+        <div id="tap-button-container">
+            <!-- Luxury Rotating Spinner (Shows while DB loads) -->
+            <div id="intro-loader">
+                <div class="luxury-spinner"></div>
+                <p class="loading-text">Loading Invitation...</p>
+            </div>
+            
+            <!-- Main tap-to-open elements (Fades in after DB loads) -->
+            <div id="intro-content" class="hidden-intro-content">
+                <button id="tap-to-open-btn">
+                    <span class="logo-letter" id="ui-intro-initials">&nbsp;</span>
+                    <span class="btn-text">TAP TO OPEN</span>
+                </button>
+                <p class="intro-hint">&nbsp;</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- 2. MAIN WEDDING PORTAL                                     -->
+    <!-- ========================================================== -->
+    <div id="main-portal" class="hidden-portal">
+        
+        <!-- Header -->
+        <header class="main-header">
+            <div class="header-container">
+                <!-- Logo & Tagline -->
+                <div class="logo-area">
+                    <a href="#" class="logo">
+                        <span class="logo-get" id="ui-logo-groom"></span><span class="logo-marry">&amp;</span><span class="logo-get" id="ui-logo-bride"></span>
+                    </a>
+                    <span class="tagline" id="ui-logo-tagline"></span>
+                </div>
+
+                <!-- Navigation Menu -->
+                <nav class="nav-menu" id="navMenu">
+                    <ul>
+                        <li><a href="#hero-section" class="active">Home</a></li>
+                        <li><a href="#story-section">Our Story</a></li>
+                        <li><a href="#events-section">Events</a></li>
+                        <li><a href="#gallery-section">Gallery</a></li>
+                        <li><a href="#menu-section">Menu</a></li>
+                        <li><a href="#guestbook-section">Guestbook</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Actions Area -->
+                <div class="header-actions">
+                    <a href="#guestbook-section" class="btn btn-primary">Send Wishes</a>
+                    <!-- Admin Ellipsis Menu -->
+                    <button class="admin-ellipsis-btn" id="adminEllipsisBtn" title="Admin Portal">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section with Live Countdown -->
+        <section class="hero-section" id="hero-section">
+            <div class="section-container hero-grid">
+                <!-- Left: Premium Couple Banner -->
+                <div class="hero-banner-image">
+                    <img src="assets/wedding_couple.jpg" alt="Zack and Zoey" class="couple-img" id="ui-hero-banner-img">
+                    <div class="image-gradient-overlay"></div>
+                    <div class="banner-badge">
+                        <i class="fa-solid fa-heart gold-icon"></i>
+                        <span>Save The Date</span>
+                    </div>
+                </div>
+
+                <!-- Right: Countdown Card -->
+                <div class="registration-card countdown-card-right">
+                    <div class="card-header">
+                        <span class="sub-heading">You are cordially invited to celebrate</span>
+                        <h1>The Wedding Celebration</h1>
+                        <p class="couple-names" id="ui-hero-names">&nbsp;</p>
+                        <div class="wedding-details-info">
+                            <p><i class="fa-solid fa-calendar-days accent-gold"></i> <span id="ui-wedding-date">&nbsp;</span></p>
+                            <p><i class="fa-solid fa-location-dot accent-gold"></i> <span id="ui-wedding-venue">&nbsp;</span></p>
+                        </div>
+                    </div>
+                    
+                    <!-- Live Countdown Timer -->
+                    <div class="countdown-container" id="countdown-timer">
+                        <div class="countdown-item">
+                            <span class="time-val" id="days">00</span>
+                            <span class="time-label">Days</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="time-val" id="hours">00</span>
+                            <span class="time-label">Hours</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="time-val" id="minutes">00</span>
+                            <span class="time-label">Mins</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="time-val" id="seconds">00</span>
+                            <span class="time-label">Secs</span>
+                        </div>
+                    </div>
+
+                    <div class="countdown-footer-msg">
+                        <p>Until we say "I Do" <i class="fa-solid fa-heart accent-gold animate-beat"></i></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Story Section -->
+        <section class="our-story-section" id="story-section">
+            <div class="section-container">
+                <div class="section-title-wrapper">
+                    <h2>Our Love Story</h2>
+                    <div class="title-underline">
+                        <i class="fa-solid fa-heart heart-icon"></i>
+                    </div>
+                    <p class="section-sub">A beautiful journey that brought us together</p>
+                </div>
+
+                <div class="story-timeline-layout">
+                    <div class="story-block">
+                        <div class="story-desc-box">
+                            <h3 id="ui-story-met-title">How We Met</h3>
+                            <p id="ui-story-met-content">It all started on a rainy autumn afternoon. Both seeking shelter from the downpour at a quiet coffee house, we ended up sharing the last vacant table. What started as a polite conversation about coffee blends turned into hours of shared laughter, dreams, and a deep connection that changed our lives forever.</p>
+                        </div>
+                    </div>
+                    <div class="story-block text-right">
+                        <div class="story-desc-box">
+                            <h3 id="ui-story-proposal-title">The Proposal</h3>
+                            <p id="ui-story-proposal-content">Three years later, Zack planned a surprise trip back to the exact same mountain trail they hiked on their first anniversary. As the sunset turned the skies gold, Zack knelt down and asked Zoey to spend the rest of her life with him. Amidst happy tears, she said a thousand times, "Yes!"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Events Schedule / Details Section -->
+        <section class="events-schedule-section" id="events-section">
+            <div class="section-container">
+                <div class="section-title-wrapper">
+                    <h2>Wedding Events Schedule</h2>
+                    <div class="title-underline">
+                        <i class="fa-solid fa-heart heart-icon"></i>
+                    </div>
+                    <p class="section-sub">Join us for the celebrations of our lifetime</p>
+                </div>
+
+                <div class="events-cards-grid">
+                    <!-- Event 1: Gaye Holud -->
+                    <div class="event-card">
+                        <div class="event-icon-box">
+                            <i class="fa-solid fa-om yellow-icon"></i>
+                        </div>
+                        <h3>Gaye Holud</h3>
+                        <p class="event-date"><i class="fa-regular fa-calendar"></i> <span id="ui-holud-date">Thursday, October 22, 2026</span></p>
+                        <p class="event-time"><i class="fa-regular fa-clock"></i> <span id="ui-holud-time">6:30 PM - 10:00 PM</span></p>
+                        <p class="event-venue"><i class="fa-solid fa-location-dot"></i> <span id="ui-holud-venue">Pearl Hall, Gardenia Banquet, Dhaka</span></p>
+                        <div class="event-dress" id="ui-holud-dress">Dress Code: Festive Yellow/Orange</div>
+                    </div>
+
+                    <!-- Event 2: Wedding Ceremony -->
+                    <div class="event-card premium-event">
+                        <div class="event-icon-box">
+                            <i class="fa-solid fa-church gold-icon"></i>
+                        </div>
+                        <h3>Wedding Ceremony</h3>
+                        <p class="event-date"><i class="fa-regular fa-calendar"></i> <span id="ui-ceremony-date">Saturday, October 24, 2026</span></p>
+                        <p class="event-time"><i class="fa-regular fa-clock"></i> <span id="ui-ceremony-time">7:00 PM onwards</span></p>
+                        <p class="event-venue"><i class="fa-solid fa-location-dot"></i> <span id="ui-ceremony-venue">Grand Ballroom, Royal Hotel, Dhaka</span></p>
+                        <div class="event-dress" id="ui-ceremony-dress">Dress Code: Formal/Traditional Royal</div>
+                    </div>
+
+                    <!-- Event 3: Reception Dinner -->
+                    <div class="event-card">
+                        <div class="event-icon-box">
+                            <i class="fa-solid fa-champagne-glasses teal-icon"></i>
+                        </div>
+                        <h3>Reception Party</h3>
+                        <p class="event-date"><i class="fa-regular fa-calendar"></i> <span id="ui-reception-date">Sunday, October 25, 2026</span></p>
+                        <p class="event-time"><i class="fa-regular fa-clock"></i> <span id="ui-reception-time">7:30 PM - 11:30 PM</span></p>
+                        <p class="event-venue"><i class="fa-solid fa-location-dot"></i> <span id="ui-reception-venue">Orchid Lounge, Royal Hotel, Dhaka</span></p>
+                        <div class="event-dress" id="ui-reception-dress">Dress Code: Tuxedo & Evening Gown</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Couple Gallery Section -->
+        <section class="main-content-section" id="gallery-section">
+            <div class="section-container">
+                <div class="section-title-wrapper">
+                    <h2>Our Moments Gallery</h2>
+                    <div class="title-underline">
+                        <i class="fa-solid fa-images gallery-icon" style="color: var(--matte-teal);"></i>
+                    </div>
+                    <p class="section-sub" id="ui-gallery-sub">A glimpse of our most precious moments together</p>
+                </div>
+
+                <div class="gallery-carousel-wrapper">
+                    <button class="gallery-nav-btn prev-btn" id="galleryPrevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="gallery-carousel-viewport" id="galleryViewport">
+                        <div class="gallery-carousel-inner" id="galleryPhotosContainer">
+                            <!-- Dynamic Gallery Photos loaded here -->
+                        </div>
+                    </div>
+                    <button class="gallery-nav-btn next-btn" id="galleryNextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+                <div class="view-all-wrapper">
+                    <button class="btn btn-outline" id="viewAllPhotosBtn"><i class="fa-solid fa-images"></i> View All Moments</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wedding Album & Downloadable Photos Section -->
+        <section class="main-content-section" id="album-section" style="background-color: var(--primary-green-dark); border-top: 1px solid rgba(212,175,55,0.1); border-bottom: 1px solid rgba(212,175,55,0.1);">
+            <div class="section-container">
+                <div class="section-title-wrapper">
+                    <h2>Wedding Album</h2>
+                    <div class="title-underline">
+                        <i class="fa-solid fa-camera-retro gallery-icon" style="color: var(--accent-gold);"></i>
+                    </div>
+                    <p class="section-sub">Download high-quality photos from our wedding celebrations</p>
+                </div>
+
+                <div class="gallery-carousel-wrapper">
+                    <button class="gallery-nav-btn prev-btn" id="albumPrevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="gallery-carousel-viewport" id="albumViewport">
+                        <div class="gallery-carousel-inner" id="albumPhotosContainer">
+                            <!-- Dynamic Downloadable Album Photos loaded here -->
+                        </div>
+                    </div>
+                    <button class="gallery-nav-btn next-btn" id="albumNextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+                <div class="view-all-wrapper">
+                    <button class="btn btn-outline" id="viewAllAlbumBtn"><i class="fa-solid fa-camera-retro"></i> View All Album</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Food Menu Section -->
+        <section class="main-content-section" id="menu-section">
+            <div class="section-container">
+                <div class="section-title-wrapper">
+                    <h2>The Wedding Feast</h2>
+                    <div class="title-underline">
+                        <i class="fa-solid fa-utensils menu-icon" style="color: var(--matte-teal);"></i>
+                    </div>
+                    <p class="section-sub" id="ui-menu-sub">A curated culinary journey featuring traditional delicacies and royal desserts.</p>
+                </div>
+
+                <div class="menu-cards-grid">
+                    <!-- Event 1 Menu -->
+                    <div class="menu-card-box">
+                        <div class="menu-card-header">
+                            <i class="fa-solid fa-om" style="color: #D4AF37;"></i>
+                            <h3>Gaye Holud Feast</h3>
+                        </div>
+                        <ul class="menu-items-list" id="ui-holud-menu-list">
+                            <!-- Dynamic items -->
+                        </ul>
+                    </div>
+
+                    <!-- Event 2 Menu -->
+                    <div class="menu-card-box premium-menu-box">
+                        <div class="menu-card-header">
+                            <i class="fa-solid fa-church" style="color: #006D77;"></i>
+                            <h3>Wedding Ceremony Feast</h3>
+                        </div>
+                        <ul class="menu-items-list" id="ui-ceremony-menu-list">
+                            <!-- Dynamic items -->
+                        </ul>
+                    </div>
+
+                    <!-- Event 3 Menu -->
+                    <div class="menu-card-box">
+                        <div class="menu-card-header">
+                            <i class="fa-solid fa-champagne-glasses" style="color: var(--grey-medium);"></i>
+                            <h3>Reception Feast</h3>
+                        </div>
+                        <ul class="menu-items-list" id="ui-reception-menu-list">
+                            <!-- Dynamic items -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Guestbook / Wishes Section -->
+        <section class="success-stories-section" id="guestbook-section">
+            <div class="section-container">
+                <div class="section-title-wrapper">
+                    <h2>Wedding Guestbook</h2>
+                    <div class="title-underline">
+                        <i class="fa-solid fa-heart heart-icon"></i>
+                    </div>
+                    <p class="section-sub">Leave a warm wish or message for Zack &amp; Zoey</p>
+                </div>
+
+                <!-- Guestbook Split Layout -->
+                <div class="guestbook-split-layout">
+                    <!-- Write Wish Form -->
+                    <div class="write-wish-card">
+                        <h3>Drop Your Wishes</h3>
+                        <form id="guestbookWishForm">
+                            <div class="form-group">
+                                <label for="wish-name">Your Name</label>
+                                <input type="text" id="wish-name" placeholder="Your Name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="wish-message">Congratulations Message</label>
+                                <textarea id="wish-message" placeholder="Write your warm wishes here..." rows="4" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-gold btn-block">Post Wish</button>
+                        </form>
+                    </div>
+
+                    <!-- Wishes Display Area -->
+                    <div class="wishes-display-board">
+                        <h3>Guest Messages</h3>
+                        <div class="stories-grid wishes-board-grid" id="successStoriesContainer">
+                            <!-- Dynamic Wishes will load here -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Venue Map Integration -->
+        <section class="events-schedule-section" id="venue-map-section" style="padding-top: 0; padding-bottom: 50px;">
+            <div class="section-container">
+                <div class="map-section-wrapper">
+                    <div class="map-info-box">
+                        <h3><i class="fa-solid fa-map-location-dot accent-gold"></i> Find the Venue</h3>
+                        <p id="ui-map-desc">Please use the map below to get directions directly to our wedding venue location.</p>
+                        <a id="ui-map-link" href="https://www.google.com/maps/?q=Dr.+Aftabuddin+Laskar" target="_blank" class="btn btn-outline btn-sm"><i class="fa-solid fa-location-arrow"></i> Open in Google Maps</a>
+                    </div>
+                    <div class="map-iframe-container">
+                        <iframe id="ui-map-iframe"
+                            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14766.430940750317!2d88.7012639!3d22.2928443!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a02190034d7e733%3A0xab35ca345a8aa089!2sDr.%20Aftabuddin%20Laskar!5e0!3m2!1sen!2sin!4v1782793918409!5m2!1sen!2sin" 
+                            width="100%" 
+                            height="350" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="strict-origin-when-cross-origin">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Visitor Map Section -->
+        <section class="visitor-map-section" id="visitor-locations-section" style="background-color: var(--soft-ivory); padding: 50px 0 70px 0;">
+            <div class="section-container">
+                <div class="section-title-wrapper" style="margin-bottom: 25px;">
+                    <h2>Guest Visitor Map</h2>
+                    <div class="title-underline">
+                        <i class="fa-solid fa-earth-americas earth-icon" style="color: var(--matte-teal);"></i>
+                    </div>
+                    <p class="section-sub">Real-time visitor map pinning friends &amp; family who visited this site</p>
+                </div>
+                <div id="visitor-map-container" style="box-shadow: var(--shadow-md); border-radius: var(--border-radius-lg); border: 2px solid var(--white); overflow: hidden;">
+                    <div id="visitor-map" style="height: 380px; width: 100%; z-index: 1;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="main-footer" id="footer-section">
+            <div class="section-container footer-bottom-flex">
+                <p>Made with <i class="fa-solid fa-heart accent-gold animate-beat"></i> for Zack &amp; Zoey. All Rights Reserved &copy; 2026.</p>
+                
+                <!-- Floating Ambient Music Control near footer -->
+                <div class="music-controller-footer">
+                    <button id="musicToggleBtn" class="music-toggle-btn paused" title="Background Music Play/Pause">
+                        <span class="music-icon-anim">
+                            <span></span><span></span><span></span><span></span>
+                        </span>
+                        <i class="fa-solid fa-music"></i>
+                        <span id="musicStatusText">Music Off</span>
+                    </button>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- 3. ADMIN PANEL OVERLAY                                     -->
+    <!-- ========================================================== -->
+    <div id="adminPanelModal" class="modal-overlay hidden-modal">
+        <div class="modal-container admin-modal-container">
+            <button class="modal-close-btn" id="closeAdminModalBtn">&times;</button>
+            
+            <!-- A. Admin Login Form -->
+            <div id="adminLoginFormArea" class="admin-form-area">
+                <div class="modal-header">
+                    <h2><i class="fa-solid fa-user-shield accent-gold"></i> Admin Login</h2>
+                    <p>Enter administrative password to view RSVP responses</p>
+                </div>
+                <form id="adminLoginForm">
+                    <div class="form-group">
+                        <label for="admin-username">Admin Username</label>
+                        <input type="text" id="admin-username" placeholder="Username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-password">Password</label>
+                        <input type="password" id="admin-password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                    <div class="modal-links">
+                        <a href="#" id="adminForgotPassBtn">Forgot password?</a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- B. Admin Dashboard (RSVP Tracker & Guestbook manager) -->
+            <div id="adminDashboardArea" class="admin-dashboard-area hidden-dashboard">
+                <div class="modal-header dashboard-header">
+                    <div class="header-left">
+                        <h2><i class="fa-solid fa-sliders teal-icon"></i> Wedding Dashboard</h2>
+                        <span id="dbModeBadge" class="badge-mode db-local">Fallback: LocalStorage</span>
+                    </div>
+                    <button class="btn btn-outline btn-sm" id="adminLogoutBtn">Logout</button>
+                </div>
+
+                <!-- Dashboard Tabs -->
+                <div class="dashboard-tabs">
+                    <button class="tab-btn active" data-tab="gallery-tab">Manage Gallery</button>
+                    <button class="tab-btn" data-tab="album-tab">Manage Album</button>
+                    <button class="tab-btn" data-tab="slideshow-tab">Hero Slideshow</button>
+                    <button class="tab-btn" data-tab="guestbook-tab">Guestbook Wishes</button>
+                    <button class="tab-btn" data-tab="settings-tab">Website Settings</button>
+                </div>
+
+                <!-- Tab 2: Guestbook Wishes Management -->
+                <div id="guestbook-tab" class="tab-content">
+                    <div class="tab-split-layout">
+                        <!-- Add/Edit Story Form -->
+                        <div class="tab-form-side">
+                            <h4 id="storyFormTitle">Edit Guestbook Entry</h4>
+                            <form id="adminStoryForm">
+                                <input type="hidden" id="edit-story-id">
+                                <div class="form-group">
+                                    <label for="story-names">Guest Name</label>
+                                    <input type="text" id="story-names" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="story-date">Date / Timestamp</label>
+                                    <input type="text" id="story-date" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="story-content">Congratulatory Message</label>
+                                    <textarea id="story-content" rows="6" required></textarea>
+                                </div>
+                                <div class="form-actions-row">
+                                    <button type="submit" class="btn btn-primary" id="saveStoryBtn">Save Changes</button>
+                                    <button type="button" class="btn btn-outline" id="cancelStoryEditBtn">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Current Stories List -->
+                        <div class="tab-list-side">
+                            <h4>Manage Guestbook Posts</h4>
+                            <div class="admin-items-list" id="adminStoriesList">
+                                <!-- Dynamic lists of wishes with delete/edit option -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="gallery-tab" class="tab-content active-content">
+                    <div class="tab-split-layout">
+                        <!-- Add/Edit Gallery Form -->
+                        <div class="tab-form-side">
+                            <h4 id="galleryFormTitle">Add New Photo</h4>
+                            <form id="adminGalleryForm">
+                                <input type="hidden" id="edit-gallery-id">
+                                <div class="form-group">
+                                    <label for="bm-caption">Caption</label>
+                                    <input type="text" id="bm-caption" required placeholder="e.g. Our First Date">
+                                </div>
+                                <div class="form-group">
+                                    <label for="bm-photo-file">Photo Upload (Upload file)</label>
+                                    <input type="file" id="bm-photo-file" accept="image/*">
+                                    <div class="upload-limit-hint" style="font-size: 0.75rem; color: var(--accent-gold); margin-top: 2px; font-weight: 500;">
+                                        Limit: Unlimited (Firebase CDN) / Max 5MB total (Local Demo Mode)
+                                    </div>
+                                    <div style="font-size: 0.8rem; color: #666; margin-top: 4px;">OR specify image URL below:</div>
+                                    <input type="text" id="bm-photo-url" placeholder="assets/wedding_couple.jpg">
+                                </div>
+                                <div class="form-actions-row">
+                                    <button type="submit" class="btn btn-primary" id="saveGalleryBtn">Save Photo</button>
+                                    <button type="button" class="btn btn-outline" id="cancelGalleryEditBtn" style="display: none;">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Current Gallery List -->
+                        <div class="tab-list-side">
+                            <h4>Current Gallery Photos</h4>
+                            <div class="admin-items-list" id="adminGalleryList">
+                                <!-- Dynamic list of gallery photos loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Manage Album -->
+                <div id="album-tab" class="tab-content">
+                    <div class="tab-split-layout">
+                        <!-- Add/Edit Album Form -->
+                        <div class="tab-form-side">
+                            <h4 id="albumFormTitle">Add New Album Photo</h4>
+                            <form id="adminAlbumForm">
+                                <input type="hidden" id="edit-album-id">
+                                <div class="form-group">
+                                    <label for="alb-caption">Caption</label>
+                                    <input type="text" id="alb-caption" required placeholder="e.g. Wedding Reception Cake Cutting">
+                                </div>
+                                <div class="form-group">
+                                    <label for="alb-photo-file">Photo Upload (Upload file)</label>
+                                    <input type="file" id="alb-photo-file" accept="image/*">
+                                    <div class="upload-limit-hint" style="font-size: 0.75rem; color: var(--accent-gold); margin-top: 2px; font-weight: 500;">
+                                        Limit: Unlimited (Firebase CDN) / Max 5MB total (Local Demo Mode)
+                                    </div>
+                                    <div style="font-size: 0.8rem; color: #666; margin-top: 4px;">OR specify image URL below:</div>
+                                    <input type="text" id="alb-photo-url" placeholder="assets/success_couple_1.jpg">
+                                </div>
+                                <div class="form-actions-row">
+                                    <button type="submit" class="btn btn-primary" id="saveAlbumBtn">Save Photo</button>
+                                    <button type="button" class="btn btn-outline" id="cancelAlbumEditBtn" style="display: none;">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Current Album List -->
+                        <div class="tab-list-side">
+                            <h4>Current Album Photos (Downloadable)</h4>
+                            <div class="admin-items-list" id="adminAlbumList">
+                                <!-- Dynamic list of album photos loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Manage Hero Slideshow -->
+                <div id="slideshow-tab" class="tab-content">
+                    <div class="tab-split-layout">
+                        <!-- Add Slideshow Photos Form -->
+                        <div class="tab-form-side">
+                            <h4>Upload Hero Slideshow Photos</h4>
+                            <form id="adminSlideshowForm">
+                                <div class="form-group">
+                                    <label for="slide-photo-files">Upload Hero Photos (Multiple allowed)</label>
+                                    <input type="file" id="slide-photo-files" accept="image/*" multiple>
+                                    <div class="upload-limit-hint" style="font-size: 0.75rem; color: var(--accent-gold); margin-top: 2px; font-weight: 500;">
+                                        Limit: Unlimited (Firebase CDN) / Max 5MB total (Local Demo Mode)
+                                    </div>
+                                    <div style="font-size: 0.8rem; color: #666; margin-top: 4px;">OR specify image URL below to add:</div>
+                                    <input type="text" id="slide-photo-url" placeholder="assets/wedding_couple.jpg">
+                                </div>
+                                <div class="form-group">
+                                    <label for="slide-rotation-interval">Slideshow Rotation Interval (seconds)</label>
+                                    <input type="number" id="slide-rotation-interval" min="2" max="60" value="5" required>
+                                </div>
+                                <div class="form-actions-row">
+                                    <button type="submit" class="btn btn-primary" id="saveSlideshowBtn">Upload Photos</button>
+                                </div>
+                            </form>
+
+                            <!-- Backup Static Image URL -->
+                            <div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid var(--grey-light);">
+                                <h5 style="margin-bottom: 8px; font-weight: 600; color: var(--charcoal-light);">Backup Single Image</h5>
+                                <form id="adminBackupImageForm">
+                                    <div class="form-group">
+                                        <label for="slide-backup-url">Backup Single Image URL</label>
+                                        <input type="text" id="slide-backup-url" placeholder="assets/wedding_couple.jpg">
+                                    </div>
+                                    <div class="form-actions-row">
+                                        <button type="submit" class="btn btn-outline" id="saveBackupImageBtn">Save Backup Image</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Current Slideshow List -->
+                        <div class="tab-list-side">
+                            <h4>Current Slideshow Images</h4>
+                            <div id="adminSlideshowManagerList" class="slideshow-photos-manager" style="display: flex; flex-wrap: wrap; gap: 10px; padding: 15px; border: 1px solid var(--grey-light); border-radius: 8px; background: rgba(0,0,0,0.02); min-height: 150px; align-content: flex-start; width: 100%;">
+                                <span style="color: #888; font-size: 0.85rem;">No slideshow photos uploaded. Using backup single image URL.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Website CMS Settings -->
+                <div id="settings-tab" class="tab-content">
+                    <div class="tab-form-side full-width-tab-form">
+                        <h4>Website Configuration Settings (CMS)</h4>
+                        
+                        <!-- Clean Database Action Box -->
+                        <div style="margin-bottom: 25px; padding: 15px; border: 1.5px dashed #ff4d4d; border-radius: 8px; background: rgba(255, 77, 77, 0.03); display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-wrap: wrap;">
+                            <div style="flex: 1; min-width: 250px;">
+                                <h5 style="margin: 0; color: #d63031; font-weight: 700; font-size: 0.95rem;"><i class="fa-solid fa-trash-can"></i> Clean Demo / Dummy Data</h5>
+                                <p style="margin: 4px 0 0 0; font-size: 0.8rem; color: #666; line-height: 1.4;">Permanently delete all default placeholder photos and dummy guestbook wishes from the database. This will NOT delete your own uploaded photos.</p>
+                            </div>
+                            <button type="button" class="btn btn-outline" id="cleanDbBtn" style="border-color: #ff4d4d; color: #ff4d4d; font-weight: 600; font-size: 0.85rem; padding: 8px 16px; background: transparent; transition: all 0.2s ease;">Clean Database</button>
+                        </div>
+
+                        <form id="adminSettingsForm">
+                            <!-- Couple Info -->
+                            <div class="form-section-title">Couple Details</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="cfg-groom-name">Groom's Name</label>
+                                    <input type="text" id="cfg-groom-name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cfg-bride-name">Bride's Name</label>
+                                    <input type="text" id="cfg-bride-name" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="cfg-tagline">Header Tagline</label>
+                                <input type="text" id="cfg-tagline" required>
+                            </div>
+
+                            <!-- Intro Screen Settings -->
+                            <div class="form-section-title">Intro Screen Customization</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="cfg-intro-bgcolor">Intro Background Color</label>
+                                    <input type="color" id="cfg-intro-bgcolor" style="height: 45px; padding: 5px; cursor: pointer; border-radius: 4px; border: 1px solid var(--grey-light);">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cfg-intro-bgimg-file">Intro Background Image (Upload)</label>
+                                    <input type="file" id="cfg-intro-bgimg-file" accept="image/*">
+                                    <div class="upload-limit-hint" style="font-size: 0.75rem; color: var(--accent-gold); margin-top: 2px; font-weight: 500;">
+                                        Limit: Unlimited (Firebase CDN) / Max 5MB total (Local Demo Mode)
+                                    </div>
+                                    <div style="font-size: 0.8rem; color: #666; margin-top: 4px;">OR specify image URL below:</div>
+                                    <input type="text" id="cfg-intro-bgimg-url">
+                                </div>
+                            </div>
+
+                            <!-- Schedule Settings -->
+                            <div class="form-section-title">Countdown & Save the Date Details</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="cfg-wedding-time">Countdown Target (Format: Oct 24, 2026 19:00:00)</label>
+                                    <input type="text" id="cfg-wedding-time" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cfg-wedding-date-text">Save the Date Header Text</label>
+                                    <input type="text" id="cfg-wedding-date-text" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="cfg-wedding-venue-text">Main Ceremony Venue Location</label>
+                                <input type="text" id="cfg-wedding-venue-text" required>
+                            </div>
+
+                            <!-- Section Subheadings & Titles -->
+                            <div class="form-section-title">Section Subheaders & Custom Copy</div>
+                            <div class="form-group">
+                                <label for="cfg-gallery-sub">Gallery Section Subheading</label>
+                                <input type="text" id="cfg-gallery-sub" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="cfg-menu-sub">Food Menu Section Subheading</label>
+                                <input type="text" id="cfg-menu-sub" required>
+                            </div>
+
+                            <!-- Food Menu Custom Feasts Details -->
+                            <div class="form-section-title">Wedding Feast Food Menus (Comma separated)</div>
+                            <div class="form-group">
+                                <label for="cfg-holud-menu">Gaye Holud Feast Menu</label>
+                                <textarea id="cfg-holud-menu" rows="2" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="cfg-ceremony-menu">Wedding Ceremony Feast Menu</label>
+                                <textarea id="cfg-ceremony-menu" rows="2" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="cfg-reception-menu">Reception Feast Menu</label>
+                                <textarea id="cfg-reception-menu" rows="2" required></textarea>
+                            </div>
+
+                            <!-- Gaye Holud -->
+                            <div class="form-section-title">Event 1: Gaye Holud (Turmeric Ceremony)</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="cfg-holud-date">Holud Date Text</label>
+                                    <input type="text" id="cfg-holud-date" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cfg-holud-time">Holud Time Text</label>
+                                    <input type="text" id="cfg-holud-time" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="cfg-holud-venue">Holud Venue Location</label>
+                                <input type="text" id="cfg-holud-venue" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="cfg-holud-dress-code">Gaye Holud Dress Code Text</label>
+                                <input type="text" id="cfg-holud-dress-code" required>
+                            </div>
+
+                            <!-- Wedding Ceremony -->
+                            <div class="form-section-title">Event 2: Wedding Ceremony</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="cfg-ceremony-date">Ceremony Date Text</label>
+                                    <input type="text" id="cfg-ceremony-date" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cfg-ceremony-time">Ceremony Time Text</label>
+                                    <input type="text" id="cfg-ceremony-time" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="cfg-ceremony-dress-code">Ceremony Dress Code Text</label>
+                                <input type="text" id="cfg-ceremony-dress-code" required>
+                            </div>
+
+                            <!-- Reception Banquet -->
+                            <div class="form-section-title">Event 3: Reception Party</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="cfg-reception-date">Reception Date Text</label>
+                                    <input type="text" id="cfg-reception-date" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cfg-reception-time">Reception Time Text</label>
+                                    <input type="text" id="cfg-reception-time" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="cfg-reception-venue">Reception Venue Location</label>
+                                <input type="text" id="cfg-reception-venue" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="cfg-reception-dress-code">Reception Dress Code Text</label>
+                                <input type="text" id="cfg-reception-dress-code" required>
+                            </div>
+
+                            <!-- Map and Music -->
+                            <div class="form-section-title">Location Map & Ambient Music</div>
+                            <div class="form-group">
+                                <label for="cfg-map-url">Google Maps Iframe Embed URL (src attribute)</label>
+                                <input type="text" id="cfg-map-url" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="cfg-music-file">Background Music (Upload audio file)</label>
+                                <input type="file" id="cfg-music-file" accept="audio/*, .mp3, .m4a, .wav, .aac, .ogg, .caf">
+                                <div class="upload-limit-hint" style="font-size: 0.75rem; color: var(--accent-gold); margin-top: 2px; font-weight: 500;">
+                                    Limit: Max 15MB (Firebase Cloud Storage required)
+                                </div>
+                                <div style="font-size: 0.8rem; color: #666; margin-top: 4px;">OR specify music MP3 stream URL below:</div>
+                                <input type="text" id="cfg-music-url" required>
+                            </div>
+
+                            <!-- Love Story Met -->
+                            <div class="form-section-title">Love Story: How We Met</div>
+                            <div class="form-group">
+                                <label for="cfg-story-met-title">How We Met Title</label>
+                                <input type="text" id="cfg-story-met-title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="cfg-story-met-content">How We Met Description</label>
+                                <textarea id="cfg-story-met-content" rows="4" required></textarea>
+                            </div>
+
+                            <!-- Love Story Proposal -->
+                            <div class="form-section-title">Love Story: The Proposal</div>
+                            <div class="form-group">
+                                <label for="cfg-story-proposal-title">Proposal Title</label>
+                                <input type="text" id="cfg-story-proposal-title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="cfg-story-proposal-content">Proposal Description</label>
+                                <textarea id="cfg-story-proposal-content" rows="4" required></textarea>
+                            </div>
+
+                            <!-- Change Password Section -->
+                            <div class="form-section-title">Change Admin Password</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="cfg-new-password">New Admin Password</label>
+                                    <input type="password" id="cfg-new-password" placeholder="Enter new password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cfg-confirm-password">Confirm New Password</label>
+                                    <input type="password" id="cfg-confirm-password" placeholder="Confirm new password">
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-outline btn-block" id="changePasswordBtn" style="margin-top: 10px; margin-bottom: 20px;">Update Password</button>
+
+                            <button type="submit" class="btn btn-primary btn-block" style="margin-top: 20px; margin-bottom: 30px;">Save Website Configurations</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- All Photos Archives Modal -->
+    <div id="all-photos-modal" class="archives-modal">
+        <div class="archives-container">
+            <button class="archives-close-btn" id="archivesCloseBtn">&times;</button>
+            <div class="archives-header">
+                <h2>Our Shared Moments</h2>
+                <p>A beautiful collection of our favorite love story highlights</p>
+            </div>
+            <div class="archives-scroll-area">
+                <div class="archives-grid" id="allPhotosGrid">
+                    <!-- Dynamic grid of all photos loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- All Album Photos Archives Modal -->
+    <div id="album-photos-modal" class="archives-modal">
+        <div class="archives-container">
+            <button class="archives-close-btn" id="albumArchivesCloseBtn">&times;</button>
+            <div class="archives-header">
+                <h2>Wedding Album</h2>
+                <p>Download and relive all our wedding celebration moments</p>
+            </div>
+            <div class="archives-scroll-area">
+                <div class="archives-grid" id="allAlbumPhotosGrid">
+                    <!-- Dynamic grid of all album photos loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3D Luxury Lightbox Modal -->
+    <div id="lightbox-modal" class="lightbox-modal">
+        <span class="lightbox-close" id="lightboxCloseBtn">&times;</span>
+        <button class="lightbox-prev" id="lightboxPrevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+        <div class="lightbox-content-wrapper">
+            <img class="lightbox-img" id="lightboxImage" src="" alt="">
+            <div class="lightbox-caption-row" style="display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 800px; margin-top: 15px; padding: 0 10px;">
+                <div class="lightbox-caption" id="lightboxCaption" style="color: var(--white); font-size: 1.1rem; font-family: 'Outfit', sans-serif;"></div>
+                <a href="" download="" id="lightboxDownloadBtn" class="album-download-btn" style="margin-top: 0; transform: none; display: none;">
+                    <i class="fa-solid fa-download"></i> Download
+                </a>
+            </div>
+        </div>
+        <button class="lightbox-next" id="lightboxNextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- 4. FIREBASE SDK IMPORTS (COMPAT SHIELD FOR CDN INTEGRATION) -->
+    <!-- ========================================================== -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <!-- HEIC/HEIF Image Converter library (for iOS/iPhone photos compatibility) -->
+    <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+
+    <!-- Leaflet.js Map Library -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- Custom App Javascript Files -->
+    <script src="firebase-config.js"></script>
+    <script src="admin.js"></script>
+    <script src="app.js"></script>
+
+</body>
+</html>
